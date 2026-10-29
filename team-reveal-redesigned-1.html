@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080706">
+<title>Haunted Oktoberfest — Team Reveal</title>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<style>
+:root{--bg:#080706;--panel:#100e0b;--gold:#c9a45a;--light:#f0d99a;--cream:#f4ead3;--muted:#b8aa8c}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:22px 14px 34px;color:var(--cream);background:radial-gradient(ellipse at 50% 0%,#6c492226,transparent 48%),var(--bg);font-family:Georgia,"Times New Roman",serif}
+.wrap{width:min(100%,520px);margin:auto}.masthead{text-align:center;padding:10px 8px 20px}.eyebrow,.section-label,.card-kicker,.card-footer{font-family:system-ui,sans-serif;text-transform:uppercase}
+.eyebrow{font-size:11px;letter-spacing:.25em;color:var(--gold)}h1{font-size:clamp(28px,7vw,38px);font-weight:500;margin:10px 0}.subtitle{color:#c8bda5;font:15px/1.5 system-ui,sans-serif;margin:0}.ornament{color:var(--gold);letter-spacing:.4em;margin-top:15px}
+.panel{border:1px solid #574425;border-radius:16px;padding:18px;background:linear-gradient(150deg,#231b10f0,#0c0a08 70%);box-shadow:0 18px 45px #0006}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.2em;color:var(--gold);margin:0 0 12px}
+button,input{font:inherit}.primary,.secondary{display:block;width:100%;border-radius:10px;padding:15px 14px;cursor:pointer;font:700 14px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.primary{background:linear-gradient(#d9b76d,#b98b3f);border:1px solid var(--light);color:#171108}.secondary{background:#17130d;border:1px solid #795d30;color:var(--light);margin-top:9px}
+#reader{width:100%;overflow:hidden;border-radius:10px;margin-top:14px}#reader video{border-radius:10px}#status{font:13px/1.5 system-ui,sans-serif;color:#c7bca6;min-height:21px;margin:12px 0 0;overflow-wrap:anywhere}#status.error{color:#ff9b8f}
+.manual{margin-top:22px;padding-top:20px;border-top:1px solid #c9a45a3d}.manual-row{display:flex;gap:8px}
+input{min-width:0;flex:1;background:#090806;color:var(--cream);border:1px solid #6c542e;border-radius:9px;padding:13px 14px;font-size:17px;outline:none}input:focus{border-color:var(--light)}
+.manual-row button{width:auto;min-width:120px;margin:0;padding:12px}.hint{font:12px/1.5 system-ui,sans-serif;color:#998b71;margin:9px 0 0}
+.result-area{margin-top:22px}.tarot-card{position:relative;overflow:hidden;text-align:center;border:1px solid var(--gold);border-radius:7px;padding:13px;background:radial-gradient(ellipse at 50% 37%,#9f752626,transparent 45%),linear-gradient(145deg,#17120c,#080706 72%);box-shadow:0 0 0 4px #c9a45a10,0 15px 38px #0009}
+.tarot-card:before{content:"";position:absolute;inset:6px;border:1px solid #8b6b35;border-radius:3px;pointer-events:none}.tarot-card:after{content:"✦ · ☾ · ✦";position:absolute;top:15px;left:0;right:0;color:#a98747;letter-spacing:.45em;font-size:10px}
+.card-inner{padding:29px 10px 17px}.card-kicker{font-size:10px;letter-spacing:.24em;color:var(--light)}.card-number{font:11px system-ui,sans-serif;letter-spacing:.18em;color:#c0ad83;margin-top:7px}
+.sigil{width:126px;height:126px;max-width:42vw;margin:20px auto 17px;display:grid;place-items:center;border:1px solid #9d7a3c;border-radius:50%;color:var(--light);font-size:66px;background:radial-gradient(circle,#392a14,#171109 68%,#0b0906);box-shadow:inset 0 0 0 5px #c9a45a0b,0 0 24px #c9a45a12}
+.team-name{font-size:clamp(25px,7vw,34px);font-weight:500;line-height:1.15;color:var(--light);margin:0}.card-rule{width:72px;height:1px;background:var(--gold);margin:16px auto}.card-footer{font-size:10px;line-height:1.7;letter-spacing:.14em;color:#b8a57f}.hidden{display:none!important}.bottom-note{text-align:center;font:11px/1.6 system-ui,sans-serif;color:#766b57;margin:18px 8px 0}
+@media(max-width:360px){.panel{padding:13px}.manual-row{flex-direction:column}.manual-row button{width:100%}.sigil{width:108px;height:108px;font-size:57px}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="masthead"><div class="eyebrow">Haunted Oktoberfest · The Secret Draw</div><h1>Reveal Your Fate</h1><p class="subtitle">Scan your ticket to discover your team.</p><div class="ornament">✦ ─── ☾ ─── ✦</div></header>
+<section class="panel" aria-label="Ticket scanner">
+<p class="section-label">01 / Scan your ticket</p><button id="startBtn" class="primary" type="button">☉ &nbsp; Start camera</button><button id="stopBtn" class="secondary hidden" type="button">Stop camera</button><div id="reader" class="hidden"></div>
+<p id="status" role="status" aria-live="polite">Camera is stopped. You can also enter the ticket number manually.</p>
+<div class="manual"><p class="section-label">02 / Manual ticket entry</p><form id="manualForm"><div class="manual-row"><input id="ticketInput" type="text" inputmode="text" autocomplete="off" placeholder="e.g. 01" aria-label="Ticket number" maxlength="80"><button class="primary" type="submit">Reveal</button></div></form><p class="hint">Accepted QR text: “01” or “Haunted Oktoberfest -01”.</p></div>
+</section>
+<section id="resultArea" class="result-area hidden" aria-live="polite"><div class="tarot-card"><div class="card-inner"><div class="card-kicker">The cards have spoken</div><div id="cardTicket" class="card-number">TICKET 01</div><div id="cardSymbol" class="sigil" aria-hidden="true">✦</div><h2 id="teamName" class="team-name">The Star</h2><div class="card-rule"></div><div class="card-footer">Haunted Oktoberfest<br>Trust the turn of fate</div></div></div></section>
+<p class="bottom-note">One ticket. One fate. Keep your team secret until the reveal.</p>
+</main>
+<script>
+(() => {
+"use strict";
+const STORAGE_KEY="hauntedOktoberfestTeamReveal_v2", TOTAL_TICKETS=99;
+const teams=[
+{name:"Wheel of Fortune",symbol:"☸"},
+{name:"The Sun",symbol:"☼"},
+{name:"The Star",symbol:"✶"},
+{name:"Nine of Cups",symbol:"♧"}
+];
+const $=id=>document.getElementById(id);let scanner=null,cameraRunning=false,scanLocked=false;
+const key=n=>String(n).padStart(2,"0");
+function teamIndex(v){
+ if(Number.isInteger(v)&&v>=0&&v<4)return v;
+ if(typeof v==="string"){let i=teams.findIndex(t=>t.name.toLowerCase()===v.trim().toLowerCase());if(i>=0)return i;let n=Number(v);if(Number.isInteger(n)&&n>=0&&n<4)return n}
+ return -1;
+}
+function normalizeSaved(raw){
+ if(!raw)return null;let p;try{p=typeof raw==="string"?JSON.parse(raw):raw}catch(_){return null}
+ if(p&&typeof p==="object"&&!Array.isArray(p)){if(p.assignments)p=p.assignments;else if(p.teams&&typeof p.teams==="object")p=p.teams}
+ const out={};
+ if(Array.isArray(p)){p.forEach((v,i)=>{let n=i+1,idx=-1;if(v&&typeof v==="object"){n=Number(v.ticket??v.ticketNumber??v.number??n);idx=teamIndex(v.teamIndex??v.team??v.assignment)}else idx=teamIndex(v);if(n>=1&&n<=99&&idx>=0)out[key(n)]=idx})}
+ else if(p&&typeof p==="object"){Object.entries(p).forEach(([k,v])=>{let n=Number(k.replace(/^0+/,"")||"0"),idx=v&&typeof v==="object"?teamIndex(v.teamIndex??v.team??v.assignment):teamIndex(v);if(n>=1&&n<=99&&idx>=0)out[key(n)]=idx})}
+ return Object.keys(out).length?out:null;
+}
+function makeBalanced(){
+ const nums=Array.from({length:99},(_,i)=>i+1);
+ for(let i=nums.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[nums[i],nums[j]]=[nums[j],nums[i]]}
+ const out={};nums.forEach((n,i)=>out[key(n)]=i%4);return out;
+}
+function getAssignments(){
+ let saved=null;try{saved=normalizeSaved(localStorage.getItem(STORAGE_KEY))}catch(_){}
+ if(saved){
+  const counts=[0,0,0,0];Object.values(saved).forEach(i=>{if(counts[i]!==undefined)counts[i]++});
+  for(let n=1;n<=99;n++)if(!(key(n) in saved)){let min=Math.min(...counts),choices=counts.map((v,i)=>v===min?i:-1).filter(i=>i>=0),idx=choices[Math.floor(Math.random()*choices.length)];saved[key(n)]=idx;counts[idx]++}
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(saved))}catch(_){}return saved;
+ }
+ const a=makeBalanced();try{localStorage.setItem(STORAGE_KEY,JSON.stringify(a))}catch(_){}return a;
+}
+const assignments=getAssignments();
+function parseTicket(raw){
+ const text=String(raw??"").trim();if(!text)return{error:"Enter or scan a ticket number."};
+ if(/^\d{1,2}$/.test(text)){let n=Number(text);return n>=1&&n<=99?{number:n}:{error:"Ticket number must be between 01 and 99."}}
+ let m=text.match(/^(?:haunted\s+oktoberfest\s*[-:#]?\s*|ticket\s*[-:#]?\s*)(\d{1,2})$/i)||text.match(/\b(?:ticket|no\.?|number)\s*[:#-]?\s*(\d{1,2})\b/i);
+ if(m){let n=Number(m[1]);return n>=1&&n<=99?{number:n}:{error:"Ticket number must be between 01 and 99."}}
+ return{error:"QR read, but the text wasn't recognized as a ticket number: "+text.slice(0,70)};
+}
+function status(msg,error=false){$("status").textContent=msg;$("status").classList.toggle("error",error)}
+function reveal(raw){
+ const p=parseTicket(raw);if(p.error){status(p.error,true);return}
+ const n=p.number,k=key(n),idx=assignments[k],team=teams[idx];
+ if(!team){status("No team assignment found for Ticket "+k+".",true);return}
+ $("cardTicket").textContent="TICKET "+k;$("cardSymbol").textContent=team.symbol;$("teamName").textContent=team.name;$("resultArea").classList.remove("hidden");$("ticketInput").value=k;status("Ticket "+k+" successfully processed. Team: "+team.name+".");
+}
+async function startCamera(){
+ if(cameraRunning)return;if(!window.Html5Qrcode){status("Scanner library didn't load. Check your internet connection and reload.",true);return}
+ scanner=new Html5Qrcode("reader");$("reader").classList.remove("hidden");$("startBtn").classList.add("hidden");$("stopBtn").classList.remove("hidden");scanLocked=false;
+ try{await scanner.start({facingMode:"environment"},{fps:10,qrbox:{width:240,height:180},aspectRatio:1.333},decoded=>{
+  if(scanLocked)return;scanLocked=true;status("QR decoded: “"+decoded+"”");reveal(decoded);if(navigator.vibrate)navigator.vibrate(80);window.setTimeout(()=>scanLocked=false,1800)
+ },()=>{});cameraRunning=true;status("Camera is ready. Point it at one QR code.")}
+ catch(e){$("reader").classList.add("hidden");$("startBtn").classList.remove("hidden");$("stopBtn").classList.add("hidden");scanner=null;status("Could not start camera. Allow camera permission, then try again. "+(e&&e.message?e.message:""),true)}
+}
+async function stopCamera(){if(scanner&&cameraRunning){try{await scanner.stop()}catch(_){}try{await scanner.clear()}catch(_){}}scanner=null;cameraRunning=false;$("reader").classList.add("hidden");$("startBtn").classList.remove("hidden");$("stopBtn").classList.add("hidden");status("Camera stopped. You can scan again or enter a ticket manually.")}
+$("startBtn").addEventListener("click",startCamera);$("stopBtn").addEventListener("click",stopCamera);
+$("manualForm").addEventListener("submit",e=>{e.preventDefault();reveal($("ticketInput").value)});
+})();
+</script></body></html>
