@@ -225,7 +225,7 @@ async function startCamera() {
 
     scanner = new Html5Qrcode("reader");
     await scanner.start(
-      { facingMode: "user" },
+      { facingMode: "environment" },
       { fps: 10, qrbox: { width: 240, height: 240 } },
       decodedText => {
         revealTicket(decodedText);
