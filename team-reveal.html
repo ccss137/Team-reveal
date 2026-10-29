@@ -169,22 +169,32 @@ function ticketNumber(text) {
   return n >= 1 && n <= 99 ? String(n).padStart(2, "0") : null;
 }
 
+
 function revealTicket(raw) {
   const number = ticketNumber(raw);
   const result = document.getElementById("result");
 
   if (!number) {
-    result.textContent = "Invalid ticket. Enter a number from 01 to 99.";
+    result.textContent =
+      "Invalid ticket. Enter a number from 01 to 99.";
     return;
   }
 
   try {
     const assignments = getAssignments();
     const team = TEAMS[assignments[number]];
+
     if (!team) throw new Error("Team assignment missing.");
 
-    result.textContent =
-      "Ticket " + number + "\n" + team.emoji + " " + team.name;
+    result.innerHTML = `
+      <div class="team-card">
+        <div class="eyebrow">YOUR DESTINY AWAITS</div>
+        <div class="team-symbol">${team.emoji}</div>
+        <div class="team-name">${team.name}</div>
+        <div class="ticket-number">HAUNTED OKTOBERFEST · TICKET ${number}</div>
+      </div>
+    `;
+
     document.getElementById("ticketInput").value = number;
     document.getElementById("status").textContent =
       "Ticket " + number + " successfully processed.";
@@ -215,7 +225,7 @@ async function startCamera() {
 
     scanner = new Html5Qrcode("reader");
     await scanner.start(
-      { facingMode: "environment" },
+      { facingMode: "user" },
       { fps: 10, qrbox: { width: 240, height: 240 } },
       decodedText => {
         revealTicket(decodedText);
