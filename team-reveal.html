@@ -38,6 +38,53 @@ button { background: #ff9f1c; color: #24122e; font-weight: bold; }
 #reader { width: 100%; margin-top: 18px; }
 #result { font-size: 23px; font-weight: bold; margin-top: 20px; }
 #status { color: #e3cceF; white-space: pre-wrap; }
+
+/* Haunted Oktoberfest tarot reveal card */
+#result {
+  margin-top: 24px;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.team-card {
+  padding: 28px 18px;
+  border: 2px solid #ff9f1c;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #321847, #160b20);
+  box-shadow: 0 0 22px #9b59b655;
+  text-align: center;
+  animation: revealCard 0.5s ease-out;
+}
+
+.team-card .eyebrow {
+  color: #ffb347;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.team-card .team-symbol {
+  font-size: 76px;
+  margin: 18px 0;
+}
+
+.team-card .team-name {
+  color: #ffb347;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.team-card .ticket-number {
+  color: #f1dffb;
+  font-size: 15px;
+  margin-top: 18px;
+}
+
+@keyframes revealCard {
+  from { opacity: 0; transform: scale(0.88); }
+  to { opacity: 1; transform: scale(1); }
+}
 </style>
 </head>
 <body>
